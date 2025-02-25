@@ -1,0 +1,10 @@
+@app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
+def edit_item(item_id):
+    item = Item.query.get(item_id)
+    form = ItemForm(obj=item)
+    if form.validate_on_submit():
+        item.name = form.name.data
+        item.quantity = form.quantity.data
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('edit_item.html', form=form)
